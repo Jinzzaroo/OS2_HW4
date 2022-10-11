@@ -2,79 +2,75 @@ package Practice;
 
 import java.util.Scanner;
 
-class Player {
-	private String name;
-
-	public Player(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public int select() {
-		Scanner sc = new Scanner(System.in);
-		System.out.print("철수[가위(1), 바위(2), 보(3), 끝내기(4)]>>");
-		return sc.nextInt();
-	}
+interface Stack {
+	int length();
+	int compacity();
+	String pop();
+	boolean push(String val);
 }
 
-class Computer extends Player {
-	public Computer(String name) {
-		super(name);
+class StringStack implements Stack {
+	private String arr[];
+	private int top;
+	public StringStack(int num) {
+		arr = new String[num];
+		top = 0;
 	}
-
-	public int select() {
-		return (int) (Math.random() * 3 + 1);
+	@Override
+	public int length() {
+		return top;
 	}
-}
-
-class RSPGame {
-	private final String rsp[] = { "가위", "바위", "보" };
-	Player[] player = new Player[2];
-
-	public RSPGame() {
-		player[0] = new Player("철수");
-		player[1] = new Computer("컴퓨터");
+	@Override
+	public int compacity() {
+		return arr.length;
 	}
-
-	public void Run() {
-		int userchoice, computerchoice;
-
-		while (true) {
-			userchoice = player[0].select();
-
-			if (userchoice < 1 || 4 < userchoice)
-				System.out.println("잘못된 입력");
-			else if (userchoice == 4)
-				break;
-
-			computerchoice = player[1].select();
-
-			System.out.println(player[0].getName() + "(" + rsp[userchoice - 1] + ") : " + player[1].getName() + "("
-					+ rsp[computerchoice - 1] + ")");
-
-			switch (userchoice - computerchoice) {
-			case 0:
-				System.out.println("무승부입니다.");
-				break;
-			case 2:
-			case -1:
-				System.out.println(player[1].getName() + "가 이겼습니다.");
-				break;
-			case -2:
-			case 1:
-				System.out.println(player[0].getName() + "가 이겼습니다.");
-				break;
-			}
+	@Override
+	public String pop() {
+		if(top==0)
+			return "비어있음";
+		else {
+			String str = arr[top-1];
+			top--;
+			return str;
+		}
+	}
+	@Override
+	public boolean push(String val) {
+		if(top == arr.length)
+			return false;
+		else {
+			arr[top] = val;
+			top++;
+			return true;
 		}
 	}
 }
 
 public class Practice9 {
 	public static void main(String[] args) {
-		RSPGame game = new RSPGame();
-		game.Run();
+		Scanner sc = new Scanner(System.in);
+		StringStack s;
+		
+		System.out.print("총 스택 저장 공간의 크기 입력 >> ");
+		s = new StringStack(sc.nextInt());
+		
+		while(true) {
+			System.out.print("문자열 입력 >> ");
+			String str = sc.next();
+			
+			if(str.equals("그만")) {
+				break;
+			}
+			
+			boolean result = s.push(str);
+			if(result==false)
+				System.out.println("스택이 꽉 차서 푸시 불가!");
+		}
+		
+		System.out.print("스택에 저장된 모든 문자열 팝 : ");
+		int len = s.length();
+		for(int i=0; i<(len); i++) {
+			System.out.print(s.pop()+" ");
+		}
 	}
 }

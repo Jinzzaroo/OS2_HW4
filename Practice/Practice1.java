@@ -1,25 +1,40 @@
 package Practice;
 
-class MyPoint {
-	private int x;
-	private int y;
-	public MyPoint(int x, int y) {
-		this.x = x;
-		this.y = y;
+public class Practice1 {
+
+	public static void main(String[] args) {
+		ColorTV myTV = new ColorTV(32, 1024);
+		myTV.printProperty();
+
 	}
-	public String toString() {
-		return "Point("+x+","+50+")";
+
+}
+
+class TV {
+	private int size;
+
+	public TV(int size) {
+		this.size = size;
+	}
+
+	protected int getSize() {
+		return size;
 	}
 }
 
-public class Practice1 {
-	public static void main(String[] args) {
-		MyPoint p = new MyPoint(3, 50);
-		MyPoint q = new MyPoint(4, 50);
-		System.out.println(p);;
-		if(p.equals(q))
-			System.out.println("같은 점");
-		else
-			System.out.println("다른 점");
+class ColorTV extends TV {
+	private int numColor;
+
+	public ColorTV(int size, int numColor) {
+		super(size);
+		this.numColor = numColor;
+	}
+
+	public void printProperty() {
+		System.out.println(getSize() + "인치 " + numColor + "컬러");
+	}
+
+	public int getColor() {
+		return numColor;
 	}
 }
